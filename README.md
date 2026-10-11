@@ -1,15 +1,34 @@
 # Payroll
 
-Payroll is a Spring Boot application for managing employee records. It exposes a REST API for creating, reading, updating, and deleting employees, and uses Spring Data JPA with an H2 in-memory database for persistence.
+<div align="center">
+
+![Java](https://img.shields.io/badge/Java-17-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-brightgreen)
+![License](https://img.shields.io/badge/License-Open%20Source-lightgrey)
+
+</div>
+
+A simple Spring Boot payroll application for managing employee records. The project exposes a REST API for creating, retrieving, updating, and deleting employees using Spring Data JPA and an embedded H2 database.
+
+## Overview
+
+This application demonstrates a clean backend architecture for a payroll system with the following responsibilities:
+
+- Employee management via REST endpoints
+- Domain modeling with JPA entities
+- Data persistence with H2 in-memory database
+- Validation for required fields
+- Maven-based project setup for easy local execution
 
 ## Features
 
-- Employee CRUD operations
-- REST API for employee management
-- Input validation for required fields
-- Java 17 and Spring Boot 3.2.0
-- H2 database for local development
-- Maven-based project setup
+- Create new employees
+- View all employees
+- Fetch employee details by ID
+- Update employee information
+- Delete employee records
+- Validation for `name` and `role`
+- Spring Boot-based REST API
 
 ## Tech Stack
 
@@ -17,7 +36,8 @@ Payroll is a Spring Boot application for managing employee records. It exposes a
 - Spring Boot 3.2.0
 - Spring Web
 - Spring Data JPA
-- Spring Validation
+- Jakarta Validation
+- Lombok
 - H2 Database
 - Maven
 
@@ -46,17 +66,19 @@ Payroll/
 ├── mvnw.cmd
 ├── pom.xml
 ├── README.md
+└── .github/
 ```
 
-## Application Overview
+## Architecture
 
-The application follows a standard Spring Boot layered architecture:
+The project follows a standard layered Spring Boot structure:
 
-- Controller: handles HTTP requests
-- Service: contains business logic
-- Repository: stores and retrieves data using JPA
-- Entity: represents the Employee model
-- DTO: transfers employee data between layers
+- `controller` – exposes REST endpoints
+- `service` – contains business logic
+- `repository` – database access via JPA
+- `entity` – persistence model
+- `dto` – request/response payload objects
+- `util` – helper classes, if any
 
 ## Employee Model
 
@@ -68,22 +90,30 @@ The `Employee` entity contains:
 
 Validation rules:
 
-- `name` is required
-- `role` is required
+- `name` must not be blank
+- `role` must not be blank
 
 ## API Endpoints
 
-Base URL: `http://localhost:8080`
+Base URL:
 
-### Get all employees
+```text
+http://localhost:8080
+```
 
-`GET /employees`
+### 1) Get all employees
 
-### Create a new employee
+```http
+GET /employees
+```
 
-`POST /employees`
+### 2) Create a new employee
 
-Request body:
+```http
+POST /employees
+```
+
+Example request body:
 
 ```json
 {
@@ -92,32 +122,50 @@ Request body:
 }
 ```
 
-### Get employee by ID
+### 3) Get employee by ID
 
-`GET /employees/{id}`
+```http
+GET /employees/{id}
+```
 
-### Update employee
+### 4) Update employee
 
-`PUT /employees/{id}`
+```http
+PUT /employees/{id}
+```
 
-### Delete employee
+Example request body:
 
-`DELETE /employees/{id}`
+```json
+{
+  "name": "John Doe",
+  "role": "Senior Developer"
+}
+```
+
+### 5) Delete employee
+
+```http
+DELETE /employees/{id}
+```
+
+## Prerequisites
+
+Before running the project, make sure you have:
+
+- Java 17+
+- Maven
+- A terminal or IDE such as IntelliJ IDEA or VS Code
 
 ## Running the Application
 
-Requirements:
-
-- Java 17
-- Maven
-
-Run the application with:
+Clone the project and run:
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-The app will start on:
+The application starts on:
 
 ```text
 http://localhost:8080
@@ -125,8 +173,26 @@ http://localhost:8080
 
 ## Configuration
 
-The project uses `src/main/resources/application.properties` for Spring Boot configuration, including database settings and application behavior.
+The application configuration is defined in:
+
+```text
+src/main/resources/application.properties
+```
+
+This project uses H2 as the default in-memory database for local development.
+
+## Database
+
+The app is configured for local persistence with H2 and can be accessed through the configured H2 console if enabled in the application properties.
 
 ## License
 
-This project is intended for educational and personal use.
+This project is intended for learning, local development, and personal use.
+
+## Future Enhancements
+
+- Add employee salary and payroll calculations
+- Add authentication and authorization
+- Introduce pagination and sorting
+- Add Swagger/OpenAPI documentation
+- Add unit and integration tests for all endpoints
