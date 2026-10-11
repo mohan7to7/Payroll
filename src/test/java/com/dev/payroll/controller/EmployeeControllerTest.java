@@ -4,7 +4,10 @@ import com.dev.payroll.dto.EmployeeDto;
 import com.dev.payroll.entity.Employee;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureWebMvc
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class EmployeeControllerTest {
 
     @Autowired
@@ -34,6 +38,7 @@ class EmployeeControllerTest {
     }
 
     @Test
+    @Order(1)
     void all_shouldReturnEmployees() throws Exception {
         mockMvc.perform(get("/employees"))
                 .andExpect(status().isOk())
@@ -41,6 +46,7 @@ class EmployeeControllerTest {
     }
 
     @Test
+    @Order(2)
     void newEmployee_shouldCreateEmployee() throws Exception {
         EmployeeDto dto = new EmployeeDto();
         dto.setName("Jane Doe");
@@ -55,6 +61,7 @@ class EmployeeControllerTest {
     }
 
     @Test
+    @Order(3)
     void one_shouldReturnEmployee() throws Exception {
         // Assuming employee with id 1 exists from LoadDatabase
         mockMvc.perform(get("/employees/1"))
@@ -63,12 +70,14 @@ class EmployeeControllerTest {
     }
 
     @Test
+    @Order(4)
     void one_shouldReturnNotFound() throws Exception {
         mockMvc.perform(get("/employees/999"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
+    @Order(5)
     void replaceEmployee_shouldUpdateEmployee() throws Exception {
         EmployeeDto dto = new EmployeeDto();
         dto.setName("Updated Name");
@@ -82,6 +91,7 @@ class EmployeeControllerTest {
     }
 
     @Test
+    @Order(6)
     void deleteEmployee_shouldDelete() throws Exception {
         mockMvc.perform(delete("/employees/1"))
                 .andExpect(status().isNoContent());
