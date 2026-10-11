@@ -29,6 +29,12 @@ services:
       - "8080:8080"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/payroll
+      SPRING_DATASOURCE_USERNAME: payroll
+      SPRING_DATASOURCE_PASSWORD: payroll
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_FLYWAY_CONNECT_RETRIES: 60
+      SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: 60000
     restart: unless-stopped
 
 volumes:
