@@ -15,20 +15,10 @@ class LoadDatabase {
 
     @Bean
     CommandLineRunner initDatabase(EmployeeRepository repository) {
-
         return args -> {
-            log.info("Preloading " + repository.save(new Employee("Bilbo Baggins", "burglar")));
-            log.info("Preloading " + repository.save(new Employee("Frodo Baggins", "thief")));
-            log.info("Preloading " + repository.save(new Employee("Bilbo Baggins 1", "burglar")));
-            log.info("Preloading " + repository.save(new Employee("Frodo Baggins 1", "thief")));
-            log.info("Preloading " + repository.save(new Employee("Bilbo Baggins 2", "burglar")));
-            log.info("Preloading " + repository.save(new Employee("Frodo Baggins 2", "thief")));
-            log.info("Preloading " + repository.save(new Employee("Bilbo Baggins 3", "burglar")));
-            log.info("Preloading " + repository.save(new Employee("Frodo Baggins 3", "thief")));
-            log.info("Preloading " + repository.save(new Employee("Bilbo Baggins 4", "burglar")));
-            log.info("Preloading " + repository.save(new Employee("Frodo Baggins 4", "thief")));
-            log.info("Preloading " + repository.save(new Employee("Frodo Baggins 5", "thief")));
-
+            log.info("Preloading {}", repository.save(new Employee("Alice Johnson", "Payroll Manager")));
+            log.info("Preloading {}", repository.save(new Employee("Bob Smith", "HR Specialist")));
+            log.info("Preloading {}", repository.save(new Employee("Charlie Brown", "Developer")));
         };
     }
 }
