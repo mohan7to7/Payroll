@@ -2,8 +2,8 @@
 
 <div align="center">
 
-![Java](https://img.shields.io/badge/Java-17-orange)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-brightgreen)
+![Java](https://img.shields.io/badge/Java-25-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.4-brightgreen)
 ![License](https://img.shields.io/badge/License-Open%20Source-lightgrey)
 
 </div>
@@ -32,8 +32,8 @@ This application demonstrates a clean backend architecture for a payroll system 
 
 ## Tech Stack
 
-- Java 17
-- Spring Boot 3.2.0
+- Java 25
+- Spring Boot 3.5.4
 - Spring Web
 - Spring Data JPA
 - Jakarta Validation
@@ -162,13 +162,28 @@ Before running the project, make sure you have:
 Clone the project and run:
 
 ```bash
-./mvnw spring-boot:run
+mvn spring-boot:run
 ```
 
 The application starts on:
 
 ```text
 http://localhost:8080
+```
+
+### Docker runtime
+
+Build and run the Java 25 container image:
+
+```bash
+docker build -t payroll:latest .
+docker run --rm -p 8080:8080 payroll:latest
+```
+
+Or with Docker Compose:
+
+```bash
+docker compose up --build
 ```
 
 ## Configuration

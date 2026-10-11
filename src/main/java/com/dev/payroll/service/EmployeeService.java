@@ -24,10 +24,31 @@ public class EmployeeService {
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
+    public List<Employee> findByRole(String role) {
+        return employeeRepository.findByRole(role);
+    }
+
+    public List<Employee> findByDepartment(String department) {
+        return employeeRepository.findByDepartment(department);
+    }
+
+    public double getAverageSalary() {
+        List<Employee> employees = employeeRepository.findAll();
+        if (employees.isEmpty()) {
+            return 0.0;
+        }
+        return employees.stream()
+                .mapToDouble(Employee::getSalary)
+                .average()
+                .orElse(0.0);
+    }
+
     public Employee save(EmployeeDto employeeDto) {
         Employee employee = new Employee();
         employee.setName(employeeDto.getName());
         employee.setRole(employeeDto.getRole());
+        employee.setDepartment(employeeDto.getDepartment());
+        employee.setSalary(employeeDto.getSalary());
         return employeeRepository.save(employee);
     }
 
@@ -35,6 +56,8 @@ public class EmployeeService {
         Employee employee = findById(id);
         employee.setName(employeeDto.getName());
         employee.setRole(employeeDto.getRole());
+        employee.setDepartment(employeeDto.getDepartment());
+        employee.setSalary(employeeDto.getSalary());
         return employeeRepository.save(employee);
     }
 

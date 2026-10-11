@@ -51,13 +51,16 @@ class EmployeeControllerTest {
         EmployeeDto dto = new EmployeeDto();
         dto.setName("Jane Doe");
         dto.setRole("Manager");
+        dto.setDepartment("Operations");
+        dto.setSalary(65000.0);
 
         mockMvc.perform(post("/employees")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value("Jane Doe"))
-                .andExpect(jsonPath("$.role").value("Manager"));
+                .andExpect(jsonPath("$.role").value("Manager"))
+                .andExpect(jsonPath("$.department").value("Operations"));
     }
 
     @Test
@@ -82,16 +85,35 @@ class EmployeeControllerTest {
         EmployeeDto dto = new EmployeeDto();
         dto.setName("Updated Name");
         dto.setRole("Updated Role");
+        dto.setDepartment("Engineering");
+        dto.setSalary(88000.0);
 
         mockMvc.perform(put("/employees/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Updated Name"));
+                .andExpect(jsonPath("$.name").value("Updated Name"))
+                .andExpect(jsonPath("$.department").value("Engineering"));
     }
 
     @Test
     @Order(6)
+    void getEmployeesByRole_shouldReturnEmployees() throws Exception {
+        mockMvc.perform(get("/employees/role/Developer"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].role").value("Developer"));
+    }
+
+    @Test
+    @Order(7)
+    void getAverageSalary_shouldReturnAverage() throws Exception {
+        mockMvc.perform(get("/employees/stats/average-salary"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.averageSalary").value(72000.0));
+    }
+
+    @Test
+    @Order(8)
     void deleteEmployee_shouldDelete() throws Exception {
         mockMvc.perform(delete("/employees/1"))
                 .andExpect(status().isNoContent());

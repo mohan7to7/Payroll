@@ -33,11 +33,13 @@ class EmployeeServiceTest {
 
     @BeforeEach
     void setUp() {
-        employee = new Employee("John Doe", "Developer");
+        employee = new Employee("John Doe", "Developer", "Engineering", 50000.0);
         employee.setId(1L);
         employeeDto = new EmployeeDto();
         employeeDto.setName("John Doe");
         employeeDto.setRole("Developer");
+        employeeDto.setDepartment("Engineering");
+        employeeDto.setSalary(50000.0);
     }
 
     @Test
@@ -68,6 +70,28 @@ class EmployeeServiceTest {
         assertThatThrownBy(() -> employeeService.findById(1L))
                 .isInstanceOf(EmployeeNotFoundException.class)
                 .hasMessage("Could not find employee 1");
+    }
+
+    @Test
+    void findByRole_shouldReturnMatchingEmployees() {
+        when(employeeRepository.findByRole("Developer")).thenReturn(List.of(employee));
+
+        List<Employee> employees = employeeService.findByRole("Developer");
+
+        assertThat(employees).hasSize(1);
+        assertThat(employees.get(0)).isEqualTo(employee);
+        verify(employeeRepository).findByRole("Developer");
+    }
+
+    @Test
+    void getAverageSalary_shouldReturnAverageAcrossEmployees() {
+        Employee secondEmployee = new Employee("Jane Doe", "Manager", "Operations", 60000.0);
+        when(employeeRepository.findAll()).thenReturn(List.of(employee, secondEmployee));
+
+        double averageSalary = employeeService.getAverageSalary();
+
+        assertThat(averageSalary).isEqualTo(55000.0);
+        verify(employeeRepository).findAll();
     }
 
     @Test

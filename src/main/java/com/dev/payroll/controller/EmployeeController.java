@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/employees")
@@ -32,6 +33,21 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public Employee one(@PathVariable Long id) {
         return employeeService.findById(id);
+    }
+
+    @GetMapping("/role/{role}")
+    public List<Employee> byRole(@PathVariable String role) {
+        return employeeService.findByRole(role);
+    }
+
+    @GetMapping("/department/{department}")
+    public List<Employee> byDepartment(@PathVariable String department) {
+        return employeeService.findByDepartment(department);
+    }
+
+    @GetMapping("/stats/average-salary")
+    public Map<String, Double> averageSalary() {
+        return Map.of("averageSalary", Math.round(employeeService.getAverageSalary() * 100.0) / 100.0);
     }
 
     @PutMapping("/{id}")
