@@ -114,6 +114,14 @@ class EmployeeControllerTest {
 
     @Test
     @Order(8)
+    void getMonthlyGrossSalary_shouldReturnCalculatedPayroll() throws Exception {
+        mockMvc.perform(get("/employees/1/payroll/monthly"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.monthlyGrossSalary").value(7333.33));
+    }
+
+    @Test
+    @Order(9)
     void deleteEmployee_shouldDelete() throws Exception {
         mockMvc.perform(delete("/employees/1"))
                 .andExpect(status().isNoContent());

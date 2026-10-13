@@ -149,6 +149,22 @@ Example request body:
 DELETE /employees/{id}
 ```
 
+### 6) Calculate monthly gross salary
+
+Returns the employee's stored annual salary divided by 12, rounded to two decimal places.
+
+```http
+GET /employees/{id}/payroll/monthly
+```
+
+Example response:
+
+```json
+{
+  "monthlyGrossSalary": 5833.33
+}
+```
+
 ## Prerequisites
 
 Before running the project, make sure you have:
@@ -206,7 +222,7 @@ This project is intended for learning, local development, and personal use.
 
 ## Future Enhancements
 
-- Add employee salary and payroll calculations
+- Add tax, deductions, and period-specific payroll calculations
 - Add authentication and authorization
 - Introduce pagination and sorting
 - Add Swagger/OpenAPI documentation

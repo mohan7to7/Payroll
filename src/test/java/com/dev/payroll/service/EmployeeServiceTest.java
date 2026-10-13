@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,6 +93,25 @@ class EmployeeServiceTest {
 
         assertThat(averageSalary).isEqualTo(55000.0);
         verify(employeeRepository).findAll();
+    }
+
+    @Test
+    void getMonthlyGrossSalary_shouldReturnRoundedMonthlySalary() {
+        when(employeeRepository.findSalaryByEmployeeId(1L)).thenReturn(Optional.of(50000.0));
+
+        BigDecimal monthlyGrossSalary = employeeService.getMonthlyGrossSalary(1L);
+
+        assertThat(monthlyGrossSalary).isEqualByComparingTo("4166.67");
+        verify(employeeRepository).findSalaryByEmployeeId(1L);
+    }
+
+    @Test
+    void getMonthlyGrossSalary_shouldThrowException_whenEmployeeDoesNotExist() {
+        when(employeeRepository.findSalaryByEmployeeId(1L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> employeeService.getMonthlyGrossSalary(1L))
+                .isInstanceOf(EmployeeNotFoundException.class)
+                .hasMessage("Could not find employee 1");
     }
 
     @Test

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +49,11 @@ public class EmployeeController {
     @GetMapping("/stats/average-salary")
     public Map<String, Double> averageSalary() {
         return Map.of("averageSalary", Math.round(employeeService.getAverageSalary() * 100.0) / 100.0);
+    }
+
+    @GetMapping("/{id}/payroll/monthly")
+    public Map<String, BigDecimal> monthlyGrossSalary(@PathVariable Long id) {
+        return Map.of("monthlyGrossSalary", employeeService.getMonthlyGrossSalary(id));
     }
 
     @PutMapping("/{id}")
