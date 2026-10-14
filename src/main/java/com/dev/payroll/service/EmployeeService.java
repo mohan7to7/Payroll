@@ -6,6 +6,7 @@ import com.dev.payroll.repository.EmployeeRepository;
 import com.dev.payroll.util.EmployeeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
@@ -52,6 +54,7 @@ public class EmployeeService {
                 .divide(BigDecimal.valueOf(12), 2, RoundingMode.HALF_UP);
     }
 
+    @Transactional
     public Employee save(EmployeeDto employeeDto) {
         Employee employee = new Employee();
         employee.setName(employeeDto.getName());
@@ -61,6 +64,7 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
+    @Transactional
     public Employee update(Long id, EmployeeDto employeeDto) {
         Employee employee = findById(id);
         employee.setName(employeeDto.getName());
@@ -70,6 +74,7 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
+    @Transactional
     public void deleteById(Long id) {
         if (!employeeRepository.existsById(id)) {
             throw new EmployeeNotFoundException(id);

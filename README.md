@@ -29,6 +29,8 @@ This application demonstrates a clean backend architecture for a payroll system 
 - Delete employee records
 - Validation for `name` and `role`
 - Spring Boot-based REST API
+- Atomic payroll run creation with persisted monthly gross-pay records
+- Payroll run history, with one run per calendar month
 
 ## Tech Stack
 
@@ -79,6 +81,8 @@ The project follows a standard layered Spring Boot structure:
 - `entity` – persistence model
 - `dto` – request/response payload objects
 - `util` – helper classes, if any
+
+Service-layer reads run in read-only transactions; writes are transactional. Payroll run creation saves the run and all employee payment records as one database transaction.
 
 ## Employee Model
 
@@ -164,6 +168,35 @@ Example response:
   "monthlyGrossSalary": 5833.33
 }
 ```
+
+### 7) Create a monthly payroll run
+
+Creates one payroll run for all employees currently in the system. Each employee's stored annual salary is divided by 12 and rounded to two decimal places. The run and all employee payment records are persisted atomically; the same month cannot be run twice. This records gross-pay calculations only and does not transfer money.
+
+```http
+POST /payroll/runs
+Content-Type: application/json
+```
+
+Example request body:
+
+```json
+{
+  "year": 2026,
+  "month": 10
+}
+```
+
+The response includes the payroll period, creation time, and each employee's gross monthly payment record.
+
+### 8) View payroll runs
+
+```http
+GET /payroll/runs
+GET /payroll/runs/{id}
+```
+
+Creating a run for a period that already exists returns `409 Conflict`.
 
 ## Prerequisites
 
